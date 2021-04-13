@@ -63,6 +63,8 @@ public class Exercise3 {
 
 			}
 			in.close();
+		} catch (FileNotFoundException e) {
+			throw new FileNotFoundException();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -75,6 +77,12 @@ public class Exercise3 {
 	//månaden.
 	public Map<Integer, Double> importSales(String fileName) throws FileNotFoundException {
 		Map<Integer, Double> importedSales = new HashMap<Integer, Double>();
+		try {
+			FileReader reader = new FileReader(fileName + ".txt");
+			BufferedReader in = new BufferedReader(reader);
+		} catch (FileNotFoundException e) {
+			throw new FileNotFoundException();
+		}
 		return null;
 	}
 
