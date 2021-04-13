@@ -48,10 +48,10 @@ public class Exercise3 {
 
 			for (int i = 0; i < numberOfRecords; i++) {
 				line = in.readLine();
-				var ArtistTitleYear= line.split(";");
-				artist = ArtistTitleYear[0];
-				title = ArtistTitleYear[1];
-				year = Integer.parseInt(ArtistTitleYear[2]);
+				var artistTitleYear= line.split(";");
+				artist = artistTitleYear[0];
+				title = artistTitleYear[1];
+				year = Integer.parseInt(artistTitleYear[2]);
 				numberOfGenre = Integer.parseInt(in.readLine());
 				Set<String> genre = new HashSet<>(numberOfGenre);
 
@@ -59,7 +59,7 @@ public class Exercise3 {
 					genre.add(in.readLine());
 				}
 
-				recordings.add(new Recording(artist, title, year, genre));
+				recordings.add(new Recording(title, artist, year, genre));
 
 			}
 			in.close();
@@ -74,6 +74,7 @@ public class Exercise3 {
 	//för januari 2021) och värdet är summan av försäljningar för den aktuella
 	//månaden.
 	public Map<Integer, Double> importSales(String fileName) throws FileNotFoundException {
+		Map<Integer, Double> importedSales = new HashMap<Integer, Double>();
 		return null;
 	}
 
