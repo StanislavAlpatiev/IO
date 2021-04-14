@@ -1,3 +1,8 @@
+// PROG2 VT2021, Övningsuppgift 3
+// Grupp 033
+// Viggo Asklöf vias2878
+// Stanislav Alpatiev stanl5991
+
 import java.util.Collection;
 import java.util.Set;
 

@@ -1,5 +1,23 @@
-import java.io.*;
-import java.util.*;
+// PROG2 VT2021, Övningsuppgift 3
+// Grupp 033
+// Viggo Asklöf vias2878
+// Stanislav Alpatiev stanl5991
+
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.HashMap;
+import java.io.FileInputStream;
+import java.io.DataInputStream;
+import java.util.Collections;
 
 public class Exercise3 {
 
@@ -10,7 +28,7 @@ public class Exercise3 {
 	//parameter enligt formatet för exportfilen (se nästa sektion).
 	public void exportRecordings(String fileName) {
 		try {
-			FileWriter utfil = new FileWriter(fileName + ".txt");
+			FileWriter utfil = new FileWriter(fileName);
 			PrintWriter out = new PrintWriter(utfil);
 
 			for (Recording recording : recordings) {
@@ -27,7 +45,11 @@ public class Exercise3 {
 				out.println("</recording>");
 			}
 
+			out.close();
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -37,13 +59,13 @@ public class Exercise3 {
 	//finns ska ett undantag av typen FileNotFoundException genereras.
 	public void importRecordings(String fileName) throws FileNotFoundException {
 		try {
-			FileReader reader = new FileReader(fileName + ".txt");
+			FileReader reader = new FileReader(fileName);
 			BufferedReader in = new BufferedReader(reader);
 			String line;
 			String title = "";
 			String artist = "";
 			int year = 0;
-			int numberOfRecords = Integer.parseInt(String.valueOf(in.readLine().charAt(0)));
+			int numberOfRecords = Integer.parseInt(in.readLine());
 			int numberOfGenre = 0;
 
 			for (int i = 0; i < numberOfRecords; i++) {
@@ -60,7 +82,6 @@ public class Exercise3 {
 				}
 
 				recordings.add(new Recording(title, artist, year, genre));
-
 			}
 			in.close();
 		} catch (FileNotFoundException e) {
@@ -77,13 +98,34 @@ public class Exercise3 {
 	//månaden.
 	public Map<Integer, Double> importSales(String fileName) throws FileNotFoundException {
 		Map<Integer, Double> importedSales = new HashMap<Integer, Double>();
+		final int multiplier = 100;
 		try {
-			FileReader reader = new FileReader(fileName + ".txt");
-			BufferedReader in = new BufferedReader(reader);
+			FileInputStream is = new FileInputStream(fileName);
+			DataInputStream dis = new DataInputStream(is);
+
+			int antalPoster = dis.readInt();
+			for (int i = 0; i < antalPoster; i++) {
+				int year = dis.readInt();
+				int month = dis.readInt();
+				int day = dis.readInt();
+				double value = dis.readDouble();
+				int key = year * multiplier + month;
+
+				if (!importedSales.containsKey(key)) {
+					importedSales.put(key, value);
+				} else {
+					value += importedSales.get(key);
+					importedSales.put(key, value);
+				}
+				//{202103=40.0, 202102=10.0, 202101=20.0, 202105=70.0, 202104=30.0, 0202103=50.0}
+			}
+			dis.close();
 		} catch (FileNotFoundException e) {
 			throw new FileNotFoundException();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		return null;
+		return importedSales;
 	}
 
 	public List<Recording> getRecordings() {
